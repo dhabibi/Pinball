@@ -19,7 +19,7 @@ function lineTo(p) {
   g.lineTo(xy[0], xy[1]);
 }
 
-function drawSphere(ballInstance){
+function drawSphere(ballInstance, color){
   var q = m.transform([ballInstance.cord[0], ballInstance.cord[1], 0]);
   var xy = viewport(q);
   g.fillStyle = "#000";
@@ -27,6 +27,11 @@ function drawSphere(ballInstance){
   g.arc(xy[0], xy[1], viewtranslate(ballInstance.r), 0, 2*Math.PI, true);
   g.closePath();
   g.fill();
+}
+
+function drawLine(lineInstance){
+  moveTo([lineInstance.a[0], lineInstance.a[1], 0]);
+  lineTo([lineInstance.b[0], lineInstance.b[1], 0]);
 }
 
 function gameCheck(ballInstance) {
@@ -39,7 +44,38 @@ function gameCheck(ballInstance) {
 }
 
 //Global variables
-var ball = new Ball([-1,0], [0.04,0.02], .02);
+var ball = new Ball([0,2], [0.0001,0], .02);
+var lines = [
+  new Line([-0.9, -1.5], [-1,1], 0, 1),
+  new Line([1,1], [.9,-1.5], 0, 1),
+  // new Line([1,-1], [-1,-1], 0, 1),
+  new Line([-.1, 0], [0.1, 0.1], 0, 1.2),
+  new Line([-.5, -.3], [-0.1, -0.1], 0, 1.2),
+];
+lines.push(); 
+
+// var leftFlipper = new Flipper();
+// var rightFlipper = new Flipper();
+
+// Keypress listener + handler
+myCanvas.addEventListener("keypress", handleKeyPress, true);
+
+function handleKeyPress(e) {
+  switch (e.keyCode){
+    case 37: // left arrow key
+      // move the left flipper
+      break;
+    case 39: // right arrow key
+      // move the right flipper
+      break;
+    case 40: // down arrow key
+      // launch the ball
+      break;
+    case 13: // enter
+      // reset the game
+      break;
+  }
+}
 
 //Animations
 myCanvas.animate = function(_g) {
@@ -58,7 +94,18 @@ myCanvas.animate = function(_g) {
   g.fill(); 
   
   m.identity();
-  ball.move(time);
+  ball.move();
+  for (var i = 0; i < lines.length; i++) {
+    lines[i].collision(ball);
+  }
   gameCheck(ball);
   drawSphere(ball);
+  for (var i = 0; i < lines.length; i++) {
+    drawLine(lines[i]);
+  }
+
+  
+  g.strokeStyle = 'rgb(0,0,0)';
+  g.lineWidth = 10;
+  g.stroke()
 }
