@@ -63,10 +63,10 @@ myCanvas.addEventListener("keypress", handleKeyPress, true);
 function handleKeyPress(e) {
   switch (e.keyCode){
     case 37: // left arrow key
-      // move the left flipper
+      // leftFlipper.rotate(); //move the left flipper
       break;
     case 39: // right arrow key
-      // move the right flipper
+      // rightFlipper.rotate(); // move the right flipper
       break;
     case 40: // down arrow key
       // launch the ball
